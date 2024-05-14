@@ -19,7 +19,7 @@ function App() {
       <h1>Lazy Load</h1>
       <Suspense fallback={<div>Component1 is loading, please wait...</div>}>
         {isLoading ? (
-          <div>Loading...</div>
+          <div className="spinner-container"></div>
         ) : (
           <Card1 />
         )}

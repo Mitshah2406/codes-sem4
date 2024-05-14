@@ -71,3 +71,40 @@ button:focus-visible {
   width: 100%;
   margin-bottom: 10rem;
 }
+
+.spinner-container{
+  width: 50px;
+  height: 6px;
+  border-radius: 8px;
+  background-color: #bdbaba;
+  position: relative;
+overflow: hidden;
+}
+
+
+.spinner-container::after{
+  content: "";
+  position: absolute;
+  background-color: rgb(9, 96, 196);
+  top: 0;
+  bottom: 0;
+  border-radius: 8px;
+
+  height: 100%;
+  width: 25px;
+  animation: left-to-right infinite .5s  ease-in-out;
+}
+@keyframes left-to-right {
+    0%{
+      transform: translateX(0%);
+    }
+    25%{
+      transform: translateX(50%);
+    }
+    50%{
+      transform: translateX(100%);
+    }
+    100%{
+      transform: translateX(0%);
+    }
+}
