@@ -35,32 +35,63 @@ class MemoryAllocationAlgos{
                       
 
         }
+
         for(int i=noOfFrames;i<noOfPg;i++){
             if(doesPageExist(pages[i], frames, noOfFrames)){
-    
-            
                 hitCount++;
-
-              System.out.println("Page No "+ pages[i]+ " --> Frame ["+ Arrays.toString(frames) +" ] => HIT");
+                 System.out.println("Page No "+ pages[i]+ " --> Frame ["+ Arrays.toString(frames) +" ] => HIT");
             }else{
-                int optimal = findFirstOccurrence(pages, i, pages.length-1,frames[0]);
-                System.out.println(optimal);
                 int frameIdxToBeRemoved = 0;
-                for(int k=1;k<noOfFrames;k++){
-                    int currentOptimal = findFirstOccurrence(pages, i, pages.length-1, frames[k]);
-                    System.out.println(currentOptimal);
-
-                    if(currentOptimal> optimal){
-                        frameIdxToBeRemoved = k;
-                        optimal= currentOptimal;
+                int optimal = findFirstOccurrence(pages, i+1, noOfPg-1, frames[0]);
+                for(int j=1;j<noOfFrames;j++){
+                    int optimalPg = findFirstOccurrence(pages, i+1,noOfPg-1,frames[j]);
+                    if(optimalPg>optimal){
+                        optimal = optimalPg;
+                        frameIdxToBeRemoved=j;
                     }
                 }
                 frames[frameIdxToBeRemoved] = pages[i];
                  System.out.println("Page No "+ pages[i]+ " --> Frame ["+ Arrays.toString(frames) +" ] => FAULT");
+                      
+            }
+
+
+
+
+
+
+
+
+
+
+
+        }
+        // for(int i=noOfFrames;i<noOfPg;i++){
+        //     if(doesPageExist(pages[i], frames, noOfFrames)){
+    
+            
+        //         hitCount++;
+
+        //       System.out.println("Page No "+ pages[i]+ " --> Frame ["+ Arrays.toString(frames) +" ] => HIT");
+        //     }else{
+        //         int optimal = findFirstOccurrence(pages, i, pages.length-1,frames[0]);
+        //         System.out.println(optimal);
+        //         int frameIdxToBeRemoved = 0;
+        //         for(int k=1;k<noOfFrames;k++){
+        //             int currentOptimal = findFirstOccurrence(pages, i, pages.length-1, frames[k]);
+        //             System.out.println(currentOptimal);
+
+        //             if(currentOptimal> optimal){
+        //                 frameIdxToBeRemoved = k;
+        //                 optimal= currentOptimal;
+        //             }
+        //         }
+        //         frames[frameIdxToBeRemoved] = pages[i];
+        //          System.out.println("Page No "+ pages[i]+ " --> Frame ["+ Arrays.toString(frames) +" ] => FAULT");
          
                 
-            }
-        }
+        //     }
+        // }
 
         System.out.println("Hit Ratio: "+ (float) hitCount/noOfPg * 100.0);
         System.out.println("Fault Ratio: "+ (float) (pages.length-hitCount)/noOfPg * 100.0);

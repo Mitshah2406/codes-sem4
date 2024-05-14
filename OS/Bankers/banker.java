@@ -1,106 +1,103 @@
 import java.util.*;
+
 class Algo{
-    int allocation[][]; 
-    int maxNeed[][]; int available[][];
-    int  remainingNeed[][];
-    int  nR,  nP;
+    int allocation[][], maxNeed[][], remainingNeed[][];
+    int nR, nP;
+    int available[];
+
     void takeInput(){
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter no. of res: ");
-        nR = sc.nextInt();
-        System.out.println("Enter no. of processes: ");
+        System.out.println("Enter no of processes: ");
         nP = sc.nextInt();
-        allocation = new int[nP][nR];
-maxNeed = new int[nP][nR];
-available = new int[1][nR]; // Assuming available resources matrix is of size 1xR
-remainingNeed = new int[nP][nR];
+        
+        System.out.println("Enter no of resources: ");
+        nR = sc.nextInt();
 
+                allocation = new int[nP][nR];
+maxNeed = new int[nP][nR];
+available = new int[nR]; // Assuming available resources matrix is of size 1xR
+remainingNeed = new int[nP][nR];
         System.out.println("Enter allocation matrix: ");
         for(int i=0;i<nP;i++){
-            for(int j =0;j<nR;j++){
+            for(int j=0;j<nR;j++){
                 allocation[i][j] = sc.nextInt();
             }
         }
-        
-        System.out.println("Enter max need matrix: ");
+        System.out.println("Enter maxneed matrix: ");
         for(int i=0;i<nP;i++){
-            for(int j =0;j<nR;j++){
+            for(int j=0;j<nR;j++){
                 maxNeed[i][j] = sc.nextInt();
             }
         }
-
-        System.out.println("Enter available resources matrix: ");
-
-            for(int j =0;j<nR;j++){
-                available[0][j] = sc.nextInt();
-            }
-        
-
+        System.out.println("Enter available res: ");
+        for(int i=0;i<nR;i++){
+            available[i] = sc.nextInt();
+        }
     }
-    int[][] generateRemainingNeed(){
-            System.out.println("Remainign Need");
-        
-        for(int i=0;i<nP;i++){
-            for(int j =0;j<nR;j++){
-         
-
+        int[][] generateRemainingNeed(){
+            System.out.println("Remaining Need: ");
+for(int i=0;i<nP;i++){
+            for(int j=0;j<nR;j++){
                 remainingNeed[i][j] = maxNeed[i][j] - allocation[i][j];
-                System.out.print(remainingNeed[i][j]+" ");
+                System.out.print(remainingNeed[i][j] +" ");
             }
             System.out.println();
         }
-
         return remainingNeed;
+    
+        }
 
-    }
+        boolean check(int[] currentlyAvailable, int i){
 
-    boolean check(int i, int currentAvailable[]){
-        for(int j=0;j<nR;j++){
-            if(remainingNeed[i][j] > currentAvailable[j]){
-                 return false;
+            for(int j=0;j<nR;j++){
+                if(remainingNeed[i][j] > currentlyAvailable[j]){
+                    return false;
+                }
             }
-        }
-        return true;
-    }
-    void isSafe(){
-        takeInput();
-        int currentAvailable[] = new int[nR];
-        boolean completed[] = new boolean[nP];
-        for(int j=0;j<nR;j++){
-            currentAvailable[j] = available[0][j];           
-        }
-        generateRemainingNeed();
-        int j = 0;
-        while(j<nP){
-            boolean allocated = false;
+            return true;
 
-            for(int i=0;i<nP;i++){
-                if(!completed[i] && check(i,currentAvailable)){
-                    System.out.println("In");
-                    allocated = true;
-                    for(int k=0;k<nR;k++){
-                        currentAvailable[k] = currentAvailable[k]+ allocation[i][k];
+        }
+        void isSafe(){
+            takeInput();
+            int currentlyAvailable[] = new int[nR];
+            boolean completed[] = new boolean[nP];
+            for(int i=0;i<nR;i++){
+                currentlyAvailable[i] = available[i];
+            }
+            generateRemainingNeed();
+            int j=0;
+            while(j<nP){
+                boolean allocated = false;
+                for(int i=0;i<nP;i++){
+                    if(!completed[i] && check(currentlyAvailable, i))
+                    {
+                                  System.out.println("In");
+                        allocated = true;
+                        for(int k=0;k<nR;k++){
+                            currentlyAvailable[k] = currentlyAvailable[k] + allocation[i][k];
+                         }
+                        completed[i] = true;
+                        j++;
+                         System.out.println("Completed Process: "+i);
                     }
-                    completed[i] = true;
-                    j++;
-                    System.out.println("Completed Process: "+i);
+
+                }
+                if(!allocated){
+                    break;
                 }
             }
 
-            if(!allocated){
-                break;
+            if(j==nP){
+                System.out.println("System is in safe");
+            }else{
+                System.out.println("System is in unsafe");
+
             }
         }
-        if(j==nP){
-            System.out.println("System is in Safe State");
-        }else{
-            System.out.println("System is in Unsafe State");
-            
-        }
-    }
+    
 }
 class banker{
-    public static void main(String[] args){
+    public static void main(String args[]){
         Algo a = new Algo();
         a.isSafe();
     }
