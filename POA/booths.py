@@ -15,7 +15,7 @@ def twoComp(a):
             l[i] = "0"
         else:
             l[i] = "1"
-    b = "0" * (len(l) - 1) + "1"
+    b = "1".zfill(len(l))
     return addNums("".join(l), b) 
 
 def addNums(x, y):
@@ -38,20 +38,22 @@ def addNums(x, y):
             carry = 1 
     return result
 
-isANeg=False
-isBNeg = False
+isANeg=0
+isBNeg = 0
 x = int(input("Enter First Number: "))
 y= int(input("Enter Second Number: "))
 
 a = bin(x).replace("0b","")
-b = bin(x).replace("0b", "")
-
+b = bin(y).replace("0b", "")
+print(f"A is {a}")
+print(f"B is {b}")
 if(a[0]=="-"):
     a = a.replace("-","")
-    isANeg = True
+    isANeg = 1
 if(b[0]=="-"):
+    print("Neg")
     b = b.replace("-", "")
-    isBNeg = True
+    isBNeg = 1
 
 count = max(len(a), len(b))
 count+=1
@@ -62,16 +64,16 @@ secondPadded = b.zfill(count)
 firstNum = twoComp(firstPadded)
 secondNum = twoComp(secondPadded)
 
-if isANeg:
+if isANeg==0:
     M = firstPadded
     M2 = firstNum
 else:
     M = firstNum
     M2 = firstPadded
-if isBNeg:
-    Q = secondNum
-else:
+if isBNeg==0:
     Q = secondPadded
+else:
+    Q = secondNum
 print(f"Count is {count}")
 AC = "0".zfill(count)
 Q1 ="0"
@@ -102,10 +104,10 @@ while count> 0 :
 ans = AC+Q
 
 
-if(isANeg and isBNeg):
+if(isANeg == isBNeg):
     ans_d = str(int(ans,2))
 else:
-    ans_d = str(int(twoComp(ans),2))
+    ans_d = "-"+str(int(twoComp(ans),2))
 
 print("The product in binary is " + ans)
 print("The decimal form of product is " + ans_d)
