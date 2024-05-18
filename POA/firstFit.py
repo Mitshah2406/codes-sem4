@@ -3,7 +3,7 @@ def firstFit(blocks, processes):
     blocked=[]
     for i in range(0, len(processes)):
         allocation.append(-1)
-        blocked.append(False)
+        
 
     for i in range(0, len(blocks)):
         blocked.append(False)
